@@ -28,56 +28,71 @@ void printList() {
         printf("--------------------------------\n");
         temp = temp->link;
     }
+    free(temp);
 }
 
 void addLast(int data) {
     // Create Node and associated data
-    Node *temp = malloc(sizeof(Node));
-    temp->data = data;
-    temp->link = NULL;
-
+    Node *ptr = malloc(sizeof(Node));
+    ptr->data = data;
+    ptr->link = NULL;
     // Base Case -> No elements in Linked List
     if (head == NULL) {
-        head = temp;
+        head = ptr;
     }
     // Search Linked List for the last element -> Node pointer = Null
     else {
-        Node *ptr = head;
-        while (ptr->link !=NULL)
-        {
-            ptr = ptr->link;
+        Node *ptr_prev = head;
+        while (ptr_prev->link != NULL) {
+            ptr_prev = ptr_prev->link;
         }
-        ptr->link = temp;
+        ptr_prev = ptr->link;
     }
 }
 
 void addFirst(int data) {
     // Create Node and associated data
-    Node *temp = malloc(sizeof(Node));
-    temp->data = data;
-    temp->link = NULL;
+    Node *ptr = malloc(sizeof(Node));
+    ptr->data = data;
+    ptr->link = NULL;
 
     // Base Case -> No elements in Linked List
     if (head == NULL) {
-        head = temp;
+        head = ptr;
     }
     else {
-        temp->link = head;
-        head = temp;
+        ptr->link = head;
+        head = ptr;
     }
 }
 
-// ToDo!
 void addPos(int data, int position) {
-    Node *next_node = malloc(sizeof(Node));
-    Node *prev_node = malloc(sizeof(Node));
+    // Create Node and associated data
+    Node *ptr = malloc(sizeof(Node));
+    ptr->data = data;
+    ptr->link = NULL;
 
-
-
-    // Base Case -> No elements in Linked List
-    if (head == NULL) {
-        head = next_node;
+    // ToDo! 
+    // Implement negative position
+    // Verification of lenght list
+    if (position < 0) {        
+        printf("Position Invalid. Cannot add to element to Linked List");
         return;
+    }
+
+    // Identical to the addFirst Function
+    if (position == 0) {
+        addFirst(data);
+    } 
+    else {
+        Node *ptr_next = head;
+        Node *ptr_prev = NULL;
+        for(int i = 0; i < position; i++) {
+            ptr_prev = ptr_next;
+            ptr_next = ptr_next->link;
+        }
+        ptr_prev->link = ptr;
+        ptr->link = ptr_next->link; 
     }
 }
 
@@ -115,26 +130,28 @@ void deleteLast() {
     }
 }
 
-Node shadowLinkedList() {
+// ToDo!
+Node copyLinkedList() {
     Node *temp = malloc(sizeof(Node));
     temp->link = head;
     return *temp;
 }
 
 
+// ToDo!
+Node cloneLinkedList() {
+    Node *temp = malloc(sizeof(Node));
+}
+
+
 
 int main() {
-    addLast(10);
-    addLast(20);
-    addLast(30);
-    addFirst(40);
+    addLast(0);
+    addLast(1);
+    addLast(2);
+    addLast(3);
+    addLast(4);
+    addLast(5);
+    addPos(6,3);
     printList();
-    deleteLast();
-    deleteLast();
-    deleteLast();
-    printList();
-
-    Node copy_list = shadowLinkedList();
-    printList();
-
 }
