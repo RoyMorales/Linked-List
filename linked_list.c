@@ -46,7 +46,7 @@ void addLast(int data) {
         while (ptr_prev->link != NULL) {
             ptr_prev = ptr_prev->link;
         }
-        ptr_prev = ptr->link;
+        ptr_prev->link = ptr;
     }
 }
 
@@ -55,7 +55,6 @@ void addFirst(int data) {
     Node *ptr = malloc(sizeof(Node));
     ptr->data = data;
     ptr->link = NULL;
-
     // Base Case -> No elements in Linked List
     if (head == NULL) {
         head = ptr;
@@ -130,6 +129,31 @@ void deleteLast() {
     }
 }
 
+void deletePos(int position) {
+    // ToDo! 
+    // Implement negative position
+    // Verification of lenght list
+    if (position < 0) {        
+            printf("Position Invalid. Cannot delete element to Linked List");
+            return;
+        }
+    // Identical to the deleteFirst Function
+    if (position == 0) {
+        deleteFirst();
+        return;
+    } 
+    else {
+        Node *ptr_next = head;
+        Node *ptr_prev = NULL;
+        for(int i = 0; i < position; i++) {
+            ptr_prev = ptr_next;
+            ptr_next = ptr_next->link;
+        }
+        ptr_prev->link = ptr_next->link;
+        free(ptr_next);
+    }
+}
+
 // ToDo!
 Node copyLinkedList() {
     Node *temp = malloc(sizeof(Node));
@@ -152,6 +176,10 @@ int main() {
     addLast(3);
     addLast(4);
     addLast(5);
-    addPos(6,3);
+    //addPos(6,3);
     printList();
+
+    deletePos(2);
+    printList();
+
 }
