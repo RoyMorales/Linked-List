@@ -23,9 +23,13 @@ typedef struct Header {
     struct Node *chain_node;
 } Header;
 
+
 struct Header *head = NULL;
 struct Header *tail = NULL;
 
+//--------------------------------------------------------------------
+//                              Print
+//--------------------------------------------------------------------
 
 void printLinkedList(Header **head) {
     if (*head == NULL) {
@@ -69,7 +73,7 @@ void printLinkedList(Header **head) {
         temp = temp->next;
     }
 
-    printf("Length of Linked List: %d", (*head)->length);
+    printf("Length of Linked List: %d\n", (*head)->length);
 
     // Redundant +/- free of memory: Pointer = Null -> Null
     free(temp);
@@ -120,9 +124,13 @@ void printLinkedListReverse (Header **head) {
         temp = temp->prev;  
     }
 
-    printf("Length of Linked List: %d", (*head)->length);
+    printf("Length of Linked List: %d\n", (*head)->length);
     free(temp);
 }
+
+//--------------------------------------------------------------------
+//                              Insertion
+//--------------------------------------------------------------------
 
 
 void addFirst(Header **head, int data) {
@@ -181,7 +189,6 @@ void addFirst(Header **head, int data) {
     }
     *head = new_head;
 }
-
 
 
 void addLast(Header **head, int data) {
@@ -244,6 +251,126 @@ void addLast(Header **head, int data) {
     }
 }
 
+void addPos(Header **head, int data, int position) {
+    int length = (*head)->length;
+
+    // ToDo! 
+    // Implement negative position
+    // Verification of lenght list
+    if (position < 0 || position > length) {        
+        printf("Position Invalid. Cannot add element to Linked List\n");
+        return;
+    }
+    // Identical to the addFirst Function
+    if (position == 0) {
+        printf("First Case - AddPos\n");
+        addFirst(head, data);
+    } 
+    // Special Case -> Last Node
+    // Node to be added is Header Node
+    else if (position == length) {
+        printf("Second Case - AddPos\n");
+        addLast(head, data);
+    } 
+    // Special Case 
+    // Last Node needs to be transformed to Header
+    else {
+        tail = (*head)->link;
+
+        // Creation of Node chain
+        Node *new_node = malloc(sizeof(Node));
+        new_node->data = data;
+        
+        // Efficienty Stuff
+        // Use of Head Pointer
+        if ((length - position) > position) {
+            printf("Normal Case -> First\n");  
+            Node *ptr_next = (*head)->chain_node;
+            Node *ptr_prev = NULL;
+
+            for(int i = 0; i < position; i++) {
+                ptr_prev = ptr_next;
+                ptr_next = ptr_next->next;
+            }
+
+            // Update new Node
+            new_node->next = ptr_next;
+            new_node->prev = ptr_prev;
+
+            // Update neighbors Nodes
+            ptr_next->prev = new_node;
+            ptr_prev->next = new_node;
+            printf("Final\n");
+
+        }
+        // Use of Tail Pointer
+        else {
+            printf("Normal Case -> Second\n");
+            Node *ptr_next = NULL;
+            Node *ptr_prev = tail->chain_node;
+
+            int path = length - position;
+
+            for(int i = 0; i < path; i++) {
+                ptr_next = ptr_prev;
+                ptr_prev = ptr_prev->prev;
+            }
+            // Update new Node
+            new_node->next = ptr_next;
+            new_node->prev = ptr_prev;
+
+            // Update neighbors Nodes
+            ptr_next->prev = new_node;
+            ptr_prev->next = new_node;
+        }   
+
+        // Update Head and Tail Header
+        tail->length += 1;
+        (*head)->length += 1;
+    }
+}
+
+
+
+
+//--------------------------------------------------------------------
+//                              Deletion
+//--------------------------------------------------------------------
+
+// Does Not Work
+void deleteFirst(Header **head) {
+    if (*head == NULL) {
+        printf("Empty List - Cannot delete first element\n");
+        return;
+    }
+
+    // Base Case - Only one Node 
+    if ((*head)->chain_node->next == NULL && (*head)->chain_node->prev == NULL) {
+        printf("First Case\n");
+
+        free((*head)->chain_node);
+        free((*head));
+
+        printf("Pointer After Free: %d\n", *head);
+    }
+    // Base Case - Two Nodes in Linked List
+    else if ((*head)->chain_node->next->next == NULL) {
+        tail = (*head)->link;
+        tail->link = tail;
+        tail->length = 1;
+
+        free((*head)->chain_node);
+        free(*head);
+    }
+
+
+
+}
+
+
+
+
+
 
 int main() {
     // Test Stuff
@@ -256,12 +383,25 @@ int main() {
 
     //printLinkedList(&List_addFirst);
 
-    addFirst(&List_test, 999);
-    addFirst(&List_test, 666);
-    addFirst(&List_test, 321);
-    addFirst(&List_test, 111);
+    addLast(&List_test, 999);
+    addLast(&List_test, 100);
+    addLast(&List_test, 200);
+    addLast(&List_test, 300);
+    addLast(&List_test, 400);
+    addLast(&List_test, 500);
+    addLast(&List_test, 600);
+    addPos(&List_test, 77777, 0);
+    addPos(&List_test, 66666, 2);
+    printf(" New Node Here\n");
+    //addPos(&List_test, 321, 3);
+    //printf(" New Node Here\n");
 
-    printLinkedList(&List_test);
+
+    //addPos(&List_test, 321, 7);
+
+    printLinkedListReverse(&List_test);
+
 }
+
 
 
