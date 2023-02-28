@@ -124,8 +124,7 @@ void printLinkedListReverse (Header **head) {
     free(temp);
 }
 
-// Something Wrong with prev pointer -> Frist case ?? Second Case
-// Third Case seen right
+
 void addFirst(Header **head, int data) {
     // Reserve Memory to struct Header and substruct Node
     Header *new_head = malloc(sizeof(Header));
@@ -135,8 +134,6 @@ void addFirst(Header **head, int data) {
 
     // Base Case -> Empty Linked List
     if (*head == NULL) {
-        printf("\n\nFirst Case\n\n");
-
         // Associate all proprieties to the new head
         new_head->chain_node->next = NULL;
         new_head->length = 1;
@@ -147,8 +144,6 @@ void addFirst(Header **head, int data) {
     }
     // Base Case -> One element in Linked List
     else if ((*head)->chain_node->next == NULL) {
-        printf("\n\nSecond Case\n\n");
-
         // Associate all proprieties of old head to the new head
         new_head->chain_node->next = (*head)->chain_node;
         new_head->length = 2;
@@ -165,27 +160,25 @@ void addFirst(Header **head, int data) {
     }
     // Remmaing Cases -> length > 2
     else {
-        printf("\n\nThird Case\n\n");
+        tail = (*head)->link;
 
         // Convert head to a chain node
         Node *node_head = malloc(sizeof(Node));
         node_head->data = (*head)->chain_node->data;
         node_head->next = (*head)->chain_node->next;
         node_head->prev = new_head->chain_node;
+        node_head->next->prev = node_head;
 
         // Associate all proprieties of old head to the new head
         new_head->chain_node->next = node_head;
-        new_head->link = (*head)->link;
         new_head->length = (*head)->length + 1;
-        new_head->link->length = (*head)->length + 1;
+        new_head->link = tail;
+        tail->link = new_head;
+        tail->length = (*head)->length + 1;
 
         free((*head)->chain_node);
         free(*head);
     }
-    printf("Head Pointer: %d\n", new_head);
-    printf("Tail Pointer: %d\n", new_head->link);
-    printf("Chain Node inside Tail: %d\n", new_head->link->chain_node);
-
     *head = new_head;
 }
 
@@ -244,8 +237,8 @@ void addLast(Header **head, int data) {
         (*head)->length += 1;
 
         // Free old header Node
-        free(tail);
         free(tail->chain_node);
+        free(tail);
     
         *head = new_tail->link;
     }
@@ -254,11 +247,7 @@ void addLast(Header **head, int data) {
 
 int main() {
     // Test Stuff
-
     Header *List_test = NULL;
-    
-    Header *List_addFirst = NULL;
-
 
     //addFirst(&List_addFirst, 69);
     //addFirst(&List_addFirst, 666);
@@ -267,13 +256,12 @@ int main() {
 
     //printLinkedList(&List_addFirst);
 
-    addLast(&List_test, 999);
-    addLast(&List_test, 666);
-    addLast(&List_test, 321);
-    addLast(&List_test, 111);
+    addFirst(&List_test, 999);
+    addFirst(&List_test, 666);
+    addFirst(&List_test, 321);
+    addFirst(&List_test, 111);
 
     printLinkedList(&List_test);
-    printLinkedListReverse(&List_test);
 }
 
 
