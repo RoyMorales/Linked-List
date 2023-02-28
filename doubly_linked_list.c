@@ -27,21 +27,18 @@ struct Header *head = NULL;
 struct Header *tail = NULL;
 
 
-
-// ToDo! -> Error with  tail - (*head)->link can point to nothing if the list is empty 
 void printLinkedList(Header **head) {
-    Node *temp = (*head)->chain_node;
-    int length = (*head)->length;
-
-    if (temp == NULL) {
+    if (*head == NULL) {
         printf("----------------------------------------------\n");
         printf("           Cannot print empty list\n");
         printf("----------------------------------------------\n");
         return;
     }
 
+    Node *temp = (*head)->chain_node;
+    int length = (*head)->length;
     tail = (*head)->link;
-    printf("\n\n>>>>>>>>>>>>>>>>>>> Header <<<<<<<<<<<<<<<<<<<\n\n");
+    printf("\n\n>>>>>>>>>>>>>>>>>>> Head <<<<<<<<<<<<<<<<<<<\n");
     printf("Pointer to Head: %d\n", (*head)->link->link);
     printf("Pointer to Tail: %d\n", (*head)->link);
     printf("Lenght of List : %d\n", (*head)->length);
@@ -50,20 +47,24 @@ void printLinkedList(Header **head) {
     while (temp != NULL) {
         counter++;
         if (counter == length) {
-            printf(">>>>>>>>>>>>>>>>>>> Tail <<<<<<<<<<<<<<<<<<<<\n\n");
+            printf("\n\n>>>>>>>>>>>>>>>>>>> Tail <<<<<<<<<<<<<<<<<<<<\n");
             printf("Pointer to Head: %d\n", tail->link);
             printf("Pointer to Tail: %d\n", tail->link->link);
             printf("Lenght of List : %d\n", tail->length);
         }
 
-        printf("**********************************************\n");
+        printf("********************** %d ********************\n", counter);
         printf("Pointer to current Node: %d\n", temp);  
         printf("Data of current Node   : %d\n", temp->data);
-        printf("----------------------------------------------\n");
+        printf("---------------------------------------------\n");
         printf("Pointer to prev Node   : %d\n", temp->prev);
         printf("Pointer to next Node   : %d\n", temp->next);        
-        printf("----------------------------------------------\n\n");
+        printf("*********************************************\n\n");
         temp = temp->next;
+
+        if (counter == 1 || counter == length) {
+            printf(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<\n\n\n\n");
+        }
     }
     // Verify if the lenght of linked list is corrected
     if (counter != (*head)->length) {
@@ -89,6 +90,15 @@ void printLinkedListReverse (Header **head) {
 
     // Temp -> Tail
     Node *temp = (*head)->link->chain_node;
+
+    printf("\n\n>>>>>>>>>>>>>>>>>>> Tail <<<<<<<<<<<<<<<<<<<<\n");
+    printf("Pointer to Head: %d\n", tail->link);
+    printf("Pointer to Tail: %d\n", tail->link->link);
+    printf("Lenght of List : %d\n", tail->length);
+
+
+
+
 }
 
 // Something Wrong with prev pointer -> Frist case ?? Second Case
@@ -168,8 +178,6 @@ void addLast(Header **head, int data) {
 
     // Base Case -> Empty Linked List
     if (*head == NULL) {
-        printf("Frist Case\n");
-
         // Associate all proprieties to the new head
         new_tail->chain_node->prev = NULL;
         new_tail->length = 1;
@@ -181,8 +189,6 @@ void addLast(Header **head, int data) {
     }
     // Base Case -> One Node
     else if ((*head)->link->chain_node->prev == NULL) {
-        printf("Second Case\n");
-
         // Associate all proprietes of old tail to the new tail
         new_tail->chain_node->prev = (*head)->chain_node;
         new_tail->length = 2;
@@ -198,15 +204,14 @@ void addLast(Header **head, int data) {
         (*head)->link = new_tail;
     }
     else {
-        printf("Third Case\n");
-
         tail = (*head)->link;
 
         // Convertion of old tail to a chain node
         Node *node_tail = malloc(sizeof(Node));
         node_tail->next = new_tail->chain_node;
-        node_tail->prev = tail->chain_node->prev;
         node_tail->data = tail->chain_node->data;
+        node_tail->prev = tail->chain_node->prev;
+        node_tail->prev->next = node_tail; 
 
         // Associate all proprietes to new tail and head update
         new_tail->chain_node->prev = node_tail;
@@ -225,53 +230,26 @@ void addLast(Header **head, int data) {
 
 
 int main() {
-
-    /*
     // Test Stuff
-    Header *head = malloc(sizeof(Header));
-    head->chain_node = malloc(sizeof(Node));
-    Node *node = malloc(sizeof(Node));
-    Header *tail = malloc(sizeof(Header));
-    tail->chain_node = malloc(sizeof(Node));
-
-
-    head->length = 3;
-    head->link = tail;
-    head->chain_node->data = 20;
-    head->chain_node->prev = NULL;
-    head->chain_node->next = node;
-
-    node->data = 7;
-    node->prev = head->chain_node;
-    node->next = tail->chain_node;
-
-    tail->length = 3;
-    tail->link = head;
-    tail->chain_node->data = 420;
-    tail->chain_node->prev = node;
-    tail->chain_node->next = NULL;
-
-    addFirst(&head, 13);
-    printLinkedList(&head);
-    */
-
-    // Test Stuff
-
 
     Header *List_test = NULL;
+    
+    Header *List_addFirst = NULL;
 
-    //addFirst(&List_test, 69);
-    //addFirst(&List_test, 420);
-    //addFirst(&List_test, 13);
-    //addFirst(&List_test, 7);
-    
-    
-    addLast(&List_test, 123);
-    addLast(&List_test, 999);
-    addLast(&List_test, 666);
-    
-    
-    printLinkedList(&List_test);
+
+    addFirst(&List_addFirst, 69);
+    addFirst(&List_addFirst, 666);
+    addFirst(&List_addFirst, 420);
+    addFirst(&List_addFirst, 700);
+
+    printLinkedList(&List_addFirst);
+
+    //addLast(&List_test, 999);
+    //addLast(&List_test, 666);
+    //addLast(&List_test, 321);
+    //addLast(&List_test, 111);
+
+    //printLinkedList(&List_test);
 }
 
 
