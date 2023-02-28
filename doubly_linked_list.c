@@ -38,6 +38,7 @@ void printLinkedList(Header **head) {
     Node *temp = (*head)->chain_node;
     int length = (*head)->length;
     tail = (*head)->link;
+
     printf("\n\n>>>>>>>>>>>>>>>>>>> Head <<<<<<<<<<<<<<<<<<<\n");
     printf("Pointer to Head: %d\n", (*head)->link->link);
     printf("Pointer to Tail: %d\n", (*head)->link);
@@ -60,17 +61,12 @@ void printLinkedList(Header **head) {
         printf("Pointer to prev Node   : %d\n", temp->prev);
         printf("Pointer to next Node   : %d\n", temp->next);        
         printf("*********************************************\n\n");
-        temp = temp->next;
 
         if (counter == 1 || counter == length) {
             printf(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<\n\n\n\n");
         }
-    }
-    // Verify if the lenght of linked list is corrected
-    if (counter != (*head)->length) {
-        printf("Lenght of the list was corrected.\n");
-        (*head)->length = counter;
-        (*head)->link->length = counter;
+
+        temp = temp->next;
     }
 
     printf("Length of Linked List: %d", (*head)->length);
@@ -88,17 +84,44 @@ void printLinkedListReverse (Header **head) {
         return;
     }
 
-    // Temp -> Tail
-    Node *temp = (*head)->link->chain_node;
+    Node *temp = tail->chain_node;
+    int length = tail->length;
+    tail = (*head)->link;
 
     printf("\n\n>>>>>>>>>>>>>>>>>>> Tail <<<<<<<<<<<<<<<<<<<<\n");
     printf("Pointer to Head: %d\n", tail->link);
     printf("Pointer to Tail: %d\n", tail->link->link);
     printf("Lenght of List : %d\n", tail->length);
 
+    int counter = length + 1;
+    while(temp != NULL) {
+        counter--;
+        if (counter == 1) {
+            printf("\n\n>>>>>>>>>>>>>>>>>>> Head <<<<<<<<<<<<<<<<<<<\n");
+            printf("Pointer to Head: %d\n", (*head)->link->link);
+            printf("Pointer to Tail: %d\n", (*head)->link);
+            printf("Lenght of List : %d\n", (*head)->length);
+
+        }
+
+        printf("********************** %d ********************\n", counter);
+        printf("Pointer to current Node: %d\n", temp);  
+        printf("Data of current Node   : %d\n", temp->data);
+        printf("---------------------------------------------\n");
+        printf("Pointer to prev Node   : %d\n", temp->prev);
+        printf("Pointer to next Node   : %d\n", temp->next);        
+        printf("*********************************************\n\n");
 
 
+        if (counter == 1 || counter == tail->length) {
+            printf(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<\n\n\n\n");
+        }
+        
+        temp = temp->prev;  
+    }
 
+    printf("Length of Linked List: %d", (*head)->length);
+    free(temp);
 }
 
 // Something Wrong with prev pointer -> Frist case ?? Second Case
@@ -237,19 +260,20 @@ int main() {
     Header *List_addFirst = NULL;
 
 
-    addFirst(&List_addFirst, 69);
-    addFirst(&List_addFirst, 666);
-    addFirst(&List_addFirst, 420);
-    addFirst(&List_addFirst, 700);
+    //addFirst(&List_addFirst, 69);
+    //addFirst(&List_addFirst, 666);
+    //addFirst(&List_addFirst, 420);
+    //addFirst(&List_addFirst, 700);
 
-    printLinkedList(&List_addFirst);
+    //printLinkedList(&List_addFirst);
 
-    //addLast(&List_test, 999);
-    //addLast(&List_test, 666);
-    //addLast(&List_test, 321);
-    //addLast(&List_test, 111);
+    addLast(&List_test, 999);
+    addLast(&List_test, 666);
+    addLast(&List_test, 321);
+    addLast(&List_test, 111);
 
-    //printLinkedList(&List_test);
+    printLinkedList(&List_test);
+    printLinkedListReverse(&List_test);
 }
 
 
