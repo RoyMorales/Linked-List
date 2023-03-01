@@ -366,10 +366,12 @@ void deleteFirst(Header **head) {
         Header *new_head = malloc(sizeof(Header));
         new_head->chain_node = malloc(sizeof(Node));
 
-        new_head->length = (*head)->length - 1;
         new_head->link = (*head)->link;
         new_head->link->length -= 1;
+
+        new_head->length = (*head)->length - 1;
         new_head->link->link = new_head;
+
         new_head->chain_node->data = (*head)->chain_node->next->data;
         new_head->chain_node->prev = NULL;
         new_head->chain_node->next = (*head)->chain_node->next->next;
@@ -395,6 +397,55 @@ void deleteLast(Header **head) {
         return;
     }
 
+    tail = (*head)->link;
+    if (tail->chain_node->prev == NULL && tail->chain_node->next == NULL) {
+        printf("First Case\n");
+        free(tail->chain_node);
+        free(tail);
+
+        *head = NULL;
+        tail = NULL;
+    }
+    else if (tail->chain_node->prev->prev == NULL) {
+        printf("Second Case\n");
+        (*head)->length = 1;
+        (*head)->link = *head;
+        (*head)->chain_node->next = NULL;
+
+        free(tail->chain_node);
+        free(tail);
+
+        tail = *head;
+    }
+    else {
+        printf("Third Case\n");
+        // Convertion of node chain to Header
+        Header *new_tail = malloc(sizeof(Header));
+        new_tail->chain_node = malloc(sizeof(Node));
+
+        // Change Stuff
+        (*head)->length -= 1;
+        (*head)->link = new_tail;
+        
+        new_tail->length = tail->length - 1;
+        new_tail->link = (*head);
+
+        new_tail->chain_node->data = tail->chain_node->prev->data;
+        new_tail->chain_node->prev = tail->chain_node->prev->prev;
+        new_tail->chain_node->next = NULL;
+
+        // Change Pointer next of chain node to new head
+        new_tail->chain_node->prev->next = new_tail->chain_node;
+
+        // Free Original Tail
+        free(tail->chain_node);
+        free(tail);
+
+        // Free converted node
+        free(tail->chain_node->prev);
+
+        tail = new_tail;
+    }
 }
 
 // To Do!
@@ -451,15 +502,16 @@ int main() {
 
     addLast(&List_test, 123);
     addLast(&List_test, 666);
-    addLast(&List_test, 12343154);
+    addLast(&List_test, 6543);
     addLast(&List_test, 13);
 
-    deleteFirst(&List_test);
-    deleteFirst(&List_test);
-    deleteFirst(&List_test);
-    deleteFirst(&List_test);
+    deleteLast(&List_test); 
 
     printLinkedList(&List_test);
+
+
+ 
+    
 
 }
 
