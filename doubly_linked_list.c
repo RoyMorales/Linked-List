@@ -73,7 +73,8 @@ void printLinkedList(Header **head) {
         temp = temp->next;
     }
 
-    printf("Length of Linked List: %d\n", (*head)->length);
+    printf("Length of Linked List : %d\n", (*head)->length);
+    printf("Counter of Linked List: %d\n", counter);
 
     // Redundant +/- free of memory: Pointer = Null -> Null
     free(temp);
@@ -125,13 +126,15 @@ void printLinkedListReverse (Header **head) {
     }
 
     printf("Length of Linked List: %d\n", (*head)->length);
+    printf("Counter of Linked List: %d\n", counter);
+
+    // Redundant +/- free of memory: Pointer = Null -> Null
     free(temp);
 }
 
 //--------------------------------------------------------------------
 //                              Insertion
 //--------------------------------------------------------------------
-
 
 void addFirst(Header **head, int data) {
     // Reserve Memory to struct Header and substruct Node
@@ -251,9 +254,15 @@ void addLast(Header **head, int data) {
     }
 }
 
-void addPos(Header **head, int data, int position) {
-    int length = (*head)->length;
 
+void addPos(Header **head, int data, int position) {
+    // Identical to the addFirst Function
+    if (position == 0 || *head == NULL) {
+        addFirst(head, data);
+        return;
+    } 
+
+    int length = (*head)->length;
     // ToDo! 
     // Implement negative position
     // Verification of lenght list
@@ -261,15 +270,9 @@ void addPos(Header **head, int data, int position) {
         printf("Position Invalid. Cannot add element to Linked List\n");
         return;
     }
-    // Identical to the addFirst Function
-    if (position == 0) {
-        printf("First Case - AddPos\n");
-        addFirst(head, data);
-    } 
     // Special Case -> Last Node
     // Node to be added is Header Node
     else if (position == length) {
-        printf("Second Case - AddPos\n");
         addLast(head, data);
     } 
     // Special Case 
@@ -284,7 +287,6 @@ void addPos(Header **head, int data, int position) {
         // Efficienty Stuff
         // Use of Head Pointer
         if ((length - position) > position) {
-            printf("Normal Case -> First\n");  
             Node *ptr_next = (*head)->chain_node;
             Node *ptr_prev = NULL;
 
@@ -300,12 +302,9 @@ void addPos(Header **head, int data, int position) {
             // Update neighbors Nodes
             ptr_next->prev = new_node;
             ptr_prev->next = new_node;
-            printf("Final\n");
-
         }
         // Use of Tail Pointer
         else {
-            printf("Normal Case -> Second\n");
             Node *ptr_next = NULL;
             Node *ptr_prev = tail->chain_node;
 
@@ -329,8 +328,6 @@ void addPos(Header **head, int data, int position) {
         (*head)->length += 1;
     }
 }
-
-
 
 
 //--------------------------------------------------------------------
@@ -362,12 +359,66 @@ void deleteFirst(Header **head) {
         free((*head)->chain_node);
         free(*head);
     }
+}
+
+// To Do!
+void deleteLast(Header **head) {
+    printf("ToDo!\n");
+
+}
+
+// To Do!
+void deletePos(Header **head) {
+    printf("ToDo!\n");
+
+}
+
+
+//--------------------------------------------------------------------
+//                              Replace
+//--------------------------------------------------------------------
+
+void replaceFirst(Header **head, int data) {
+    if (*head == NULL) {
+        printf("Cannot replace non existing Node");
+        return;
+    } 
+
+    int lenght = (*head)->length;
+    if (position < 0 || position > lenght) {
+        printf("Position Invalid. Cannot add element to Linked List\n");
+        return;
+    }
+
+    // Base Case -> One Node
+    if ((*head)->chain_node->next == NULL) {
+
+    }
 
 
 
 }
 
+// To Do!
+void replaceLast(Header **head, int data) {
+    printf("ToDo!\n");
+}
 
+// To Do!
+void replacePos(Header **head, int data, int position) {
+    if (*head == NULL) {
+        printf("Cannot replace non existing Node");
+        return;
+    } 
+
+    int lenght = (*head)->length;
+    if (position < 0 || position > lenght) {
+        printf("Position Invalid. Cannot add element to Linked List\n");
+        return;
+    }
+
+
+}
 
 
 
@@ -383,23 +434,11 @@ int main() {
 
     //printLinkedList(&List_addFirst);
 
-    addLast(&List_test, 999);
-    addLast(&List_test, 100);
-    addLast(&List_test, 200);
-    addLast(&List_test, 300);
-    addLast(&List_test, 400);
-    addLast(&List_test, 500);
-    addLast(&List_test, 600);
     addPos(&List_test, 77777, 0);
-    addPos(&List_test, 66666, 2);
-    printf(" New Node Here\n");
-    //addPos(&List_test, 321, 3);
-    //printf(" New Node Here\n");
+    addPos(&List_test, 66666, 1);
+    addPos(&List_test, 321, 7);
 
-
-    //addPos(&List_test, 321, 7);
-
-    printLinkedListReverse(&List_test);
+    printLinkedList(&List_test);
 
 }
 
