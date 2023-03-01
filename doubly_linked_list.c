@@ -334,36 +334,66 @@ void addPos(Header **head, int data, int position) {
 //                              Deletion
 //--------------------------------------------------------------------
 
-// Does Not Work
 void deleteFirst(Header **head) {
     if (*head == NULL) {
         printf("Empty List - Cannot delete first element\n");
         return;
     }
-
     // Base Case - Only one Node 
     if ((*head)->chain_node->next == NULL && (*head)->chain_node->prev == NULL) {
-        printf("First Case\n");
-
         free((*head)->chain_node);
-        free((*head));
+        free(*head);
 
-        printf("Pointer After Free: %d\n", *head);
+        *head = NULL;
     }
     // Base Case - Two Nodes in Linked List
     else if ((*head)->chain_node->next->next == NULL) {
         tail = (*head)->link;
-        tail->link = tail;
-        tail->length = 1;
 
+        tail->length = 1;
+        tail->link = tail;
+        tail->chain_node->prev = NULL;
+
+        // Free Original Head
         free((*head)->chain_node);
         free(*head);
+
+        // Tail is now head
+        *head = tail;
+    }
+    else {        
+        // Convertion of node chain to Header
+        Header *new_head = malloc(sizeof(Header));
+        new_head->chain_node = malloc(sizeof(Node));
+
+        new_head->length = (*head)->length - 1;
+        new_head->link = (*head)->link;
+        new_head->link->length -= 1;
+        new_head->link->link = new_head;
+        new_head->chain_node->data = (*head)->chain_node->next->data;
+        new_head->chain_node->prev = NULL;
+        new_head->chain_node->next = (*head)->chain_node->next->next;
+
+        // Change Pointer next of chain node to new head
+        new_head->chain_node->next->prev = new_head->chain_node;
+
+        // Free Original Head
+        free((*head)->chain_node);
+        free(*head);
+
+        // Free converted node
+        free((*head)->chain_node->next);
+
+        *head = new_head;
     }
 }
 
-// To Do!
+
 void deleteLast(Header **head) {
-    printf("ToDo!\n");
+    if (*head == NULL) {
+        printf("Empty List - Cannot delete last element\n");
+        return;
+    }
 
 }
 
@@ -375,7 +405,7 @@ void deletePos(Header **head) {
 
 
 //--------------------------------------------------------------------
-//                              Replace
+//                              Replacement
 //--------------------------------------------------------------------
 
 void replaceFirst(Header **head, int data) {
@@ -384,18 +414,10 @@ void replaceFirst(Header **head, int data) {
         return;
     } 
 
-    int lenght = (*head)->length;
-    if (position < 0 || position > lenght) {
-        printf("Position Invalid. Cannot add element to Linked List\n");
-        return;
-    }
-
     // Base Case -> One Node
     if ((*head)->chain_node->next == NULL) {
-
+        printf("ToDo!\n");
     }
-
-
 
 }
 
@@ -427,16 +449,15 @@ int main() {
     // Test Stuff
     Header *List_test = NULL;
 
-    //addFirst(&List_addFirst, 69);
-    //addFirst(&List_addFirst, 666);
-    //addFirst(&List_addFirst, 420);
-    //addFirst(&List_addFirst, 700);
+    addLast(&List_test, 123);
+    addLast(&List_test, 666);
+    addLast(&List_test, 12343154);
+    addLast(&List_test, 13);
 
-    //printLinkedList(&List_addFirst);
-
-    addPos(&List_test, 77777, 0);
-    addPos(&List_test, 66666, 1);
-    addPos(&List_test, 321, 7);
+    deleteFirst(&List_test);
+    deleteFirst(&List_test);
+    deleteFirst(&List_test);
+    deleteFirst(&List_test);
 
     printLinkedList(&List_test);
 
