@@ -168,12 +168,12 @@ void printNode(Header **head, int position) {
 }
 
 
-void printFirst(Header *head) {
-    printf("ToDo!\n");
+void printFirst(Header **head) {
+    printNode(head, 0);
 }
 
-void printLast(Header *head) {
-    printf("ToDo!\n");
+void printLast(Header **head) {
+    printNode(head, (*head)->length - 1);
 }
 
 //--------------------------------------------------------------------
@@ -642,7 +642,8 @@ int main() {
     addLast(&List_test, 1);
     addLast(&List_test, 15);
 
-    printNode(&List_test, 0);
+    printFirst(&List_test);
+    printLast(&List_test);
 
 }
 
