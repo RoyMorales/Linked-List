@@ -267,7 +267,7 @@ void addPos(Header **head, int data, int position) {
     // Implement negative position
     // Verification of lenght list
     if (position < 0 || position > length) {        
-        printf("Position Invalid. Cannot add element to Linked List\n");
+        printf("Position Invalid. Cannot add element.\n");
         return;
     }
     // Special Case -> Last Node
@@ -336,7 +336,7 @@ void addPos(Header **head, int data, int position) {
 
 void deleteFirst(Header **head) {
     if (*head == NULL) {
-        printf("Empty List - Cannot delete first element\n");
+        printf("Empty List - Cannot delete first element.\n");
         return;
     }
     // Base Case - Only one Node 
@@ -393,7 +393,7 @@ void deleteFirst(Header **head) {
 
 void deleteLast(Header **head) {
     if (*head == NULL) {
-        printf("Empty List - Cannot delete last element\n");
+        printf("Empty List - Cannot delete last element.\n");
         return;
     }
 
@@ -524,7 +524,7 @@ void deleteAll(Header **head) {
 
 void replaceFirst(Header **head, int data) {
     if (*head == NULL) {
-        printf("Cannot replace non existing Node");
+        printf("Cannot replace non existing Node.");
         return;
     } 
 
@@ -535,27 +535,29 @@ void replaceFirst(Header **head, int data) {
 
 void replaceLast(Header **head, int data) {
     if (*head == NULL) {
-        printf("Cannot replace non existing Node");
+        printf("Cannot replace non existing Node.");
         return;
     } 
 
     deleteLast(head);
     addLast(head, data);
-
 }
 
-// To Do!
+
 void replacePos(Header **head, int data, int position) {
     if (*head == NULL) {
-        printf("Cannot replace non existing Node");
+        printf("Cannot replace non existing Node.");
         return;
     } 
 
     int lenght = (*head)->length;
     if (position < 0 || position > lenght) {
-        printf("Position Invalid. Cannot add element to Linked List\n");
+        printf("Position Invalid. Cannot replace element.\n");
         return;
     }
+
+    deletePos(head, position);
+    addPos(head, data, position);
 }
 
 
