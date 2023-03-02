@@ -581,9 +581,10 @@ int main() {
     addLast(&List_test, 111);
     addLast(&List_test, 123);
     addLast(&List_test, 321);
+    addLast(&List_test, 69);
+    addLast(&List_test, 420);
+    addLast(&List_test, 13);
 
-    replaceFirst(&List_test, 69);
-    replaceLast(&List_test, 420);
 
     printLinkedList(&List_test);  
 
