@@ -532,9 +532,16 @@ void replaceFirst(Header **head, int data) {
     addFirst(head, data);
 }
 
-// To Do!
+
 void replaceLast(Header **head, int data) {
-    printf("ToDo!\n");
+    if (*head == NULL) {
+        printf("Cannot replace non existing Node");
+        return;
+    } 
+
+    deleteLast(head);
+    addLast(head, data);
+
 }
 
 // To Do!
@@ -576,6 +583,7 @@ int main() {
     addLast(&List_test, 321);
 
     replaceFirst(&List_test, 69);
+    replaceLast(&List_test, 420);
 
     printLinkedList(&List_test);  
 
