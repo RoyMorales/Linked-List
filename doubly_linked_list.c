@@ -528,8 +528,8 @@ void replaceFirst(Header **head, int data) {
         return;
     } 
 
-    
-
+    deleteFirst(head);
+    addFirst(head, data);
 }
 
 // To Do!
@@ -574,6 +574,8 @@ int main() {
     addLast(&List_test, 111);
     addLast(&List_test, 123);
     addLast(&List_test, 321);
+
+    replaceFirst(&List_test, 69);
 
     printLinkedList(&List_test);  
 
