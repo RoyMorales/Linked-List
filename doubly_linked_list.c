@@ -1,6 +1,8 @@
 // Implemantaion of a Doubly Linked List
 // With a head and tail pointer
 
+// Badly written - so sowwy
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -125,11 +127,53 @@ void printLinkedListReverse (Header **head) {
         temp = temp->prev;  
     }
 
-    printf("Length of Linked List: %d\n", (*head)->length);
-    printf("Counter of Linked List: %d\n", counter);
-
     // Redundant +/- free of memory: Pointer = Null -> Null
     free(temp);
+}
+
+
+void printNode(Header **head, int position) {
+    if (*head == NULL) {
+        printf("----------------------------------------------\n");
+        printf("       Cannot print Node - Empty List\n");
+        printf("----------------------------------------------\n");
+        return;
+    }
+
+    int length = (*head)->length;
+    // ToDo! 
+    // Implement negative position
+    // Verification of lenght list
+    if (position < 0 || position > length) {        
+        printf("Position Invalid. Cannot search element.\n");
+        return;
+    }
+
+    Node *ptr_next = (*head)->chain_node;
+    Node *ptr_prev = NULL;
+
+    int i;
+    for(i = 0; i < position; i++) {
+        ptr_prev = ptr_next;
+        ptr_next = ptr_next->next;
+    }
+
+    printf("**********************************************\n");
+    printf("Pointer to current Node: %d\n", ptr_next);  
+    printf("Data of current Node   : %d\n", ptr_next->data);
+    printf("---------------------------------------------\n");
+    printf("Pointer to prev Node   : %d\n", ptr_next->prev);
+    printf("Pointer to next Node   : %d\n", ptr_next->next);        
+    printf("*********************************************\n\n");
+}
+
+
+void printFirst(Header *head) {
+    printf("ToDo!\n");
+}
+
+void printLast(Header *head) {
+    printf("ToDo!\n");
 }
 
 //--------------------------------------------------------------------
@@ -329,7 +373,6 @@ void addPos(Header **head, int data, int position) {
     }
 }
 
-
 //--------------------------------------------------------------------
 //                              Deletion
 //--------------------------------------------------------------------
@@ -517,7 +560,6 @@ void deleteAll(Header **head) {
     }
 }
 
-
 //--------------------------------------------------------------------
 //                              Replacement
 //--------------------------------------------------------------------
@@ -560,13 +602,25 @@ void replacePos(Header **head, int data, int position) {
     addPos(head, data, position);
 }
 
-
 //--------------------------------------------------------------------
 //                            Search and Counting
 //--------------------------------------------------------------------
+// ToDo!
+int searchFirst(Header **head, int data) {
+    printf("ToDo!\n");
+}
 
+int searchLast(Header **head, int data) {
+    printf("ToDo!\n");
+}
 
+int searchAll(Header **head, int data) {
+    printf("ToDo!\n");
+}
 
+int searchPos(Header **head, int position) {
+    printf("ToDo!\n");
+}
 
 //--------------------------------------------------------------------
 //                             Copy and Clonning
@@ -581,14 +635,14 @@ int main() {
     Header *List_test = NULL;
 
     addLast(&List_test, 111);
-    addLast(&List_test, 123);
-    addLast(&List_test, 321);
     addLast(&List_test, 69);
     addLast(&List_test, 420);
     addLast(&List_test, 13);
+    addLast(&List_test, 7);
+    addLast(&List_test, 1);
+    addLast(&List_test, 15);
 
-
-    printLinkedList(&List_test);  
+    printNode(&List_test, 0);
 
 }
 
