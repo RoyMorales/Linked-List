@@ -399,7 +399,6 @@ void deleteLast(Header **head) {
 
     tail = (*head)->link;
     if (tail->chain_node->prev == NULL && tail->chain_node->next == NULL) {
-        printf("First Case\n");
         free(tail->chain_node);
         free(tail);
 
@@ -407,7 +406,6 @@ void deleteLast(Header **head) {
         tail = NULL;
     }
     else if (tail->chain_node->prev->prev == NULL) {
-        printf("Second Case\n");
         (*head)->length = 1;
         (*head)->link = *head;
         (*head)->chain_node->next = NULL;
@@ -418,7 +416,6 @@ void deleteLast(Header **head) {
         tail = *head;
     }
     else {
-        printf("Third Case\n");
         // Convertion of node chain to Header
         Header *new_tail = malloc(sizeof(Header));
         new_tail->chain_node = malloc(sizeof(Node));
@@ -449,9 +446,63 @@ void deleteLast(Header **head) {
 }
 
 // To Do!
-void deletePos(Header **head) {
-    printf("ToDo!\n");
+void deletePos(Header **head, int position) {
+    if (*head == NULL) {
+        printf("Empty List - Cannot delete element.\n");
+        return;
+    }
+    if (position < 0 || position >= (*head)->length) {
+        printf("Position Invalid. Cannot delete element.\n");
+        return;
+    }
 
+    if (position == 0) {
+        deleteFirst(head);
+    }
+    else if (position == (((*head)->length) - 1)) {
+        deleteLast(head);
+    }
+    else {
+        tail = (*head)->link;
+        
+        // Efficienty Stuff
+        // Use of Head Pointer
+        if (((*head)->length - position) > position) {
+            Node *ptr_next = (*head)->chain_node;
+            Node *ptr_prev = NULL;
+
+            for(int i = 0; i < position; i++) {
+                ptr_prev = ptr_next;
+                ptr_next = ptr_next->next;
+            }
+
+            // Update neighbors Nodes
+            ptr_next->next->prev = ptr_prev;
+            ptr_prev->next = ptr_next->next;
+
+            free(ptr_next);
+        }
+        // Use of Tail Pointer
+        else {
+            Node *ptr_next = NULL;
+            Node *ptr_prev = tail->chain_node;
+
+            int path = tail->length - position;
+
+            for(int i = 0; i < path; i++) {
+                ptr_next = ptr_prev;
+                ptr_prev = ptr_prev->prev;
+            }
+
+            // Update neighbors Nodes
+            ptr_next->next->prev = ptr_prev;
+            ptr_prev->next = ptr_next->next;
+        }   
+
+        // Update Head and Tail Header
+        tail->length -= 1;
+        (*head)->length -= 1;
+    }
 }
 
 
@@ -505,7 +556,12 @@ int main() {
     addLast(&List_test, 6543);
     addLast(&List_test, 13);
 
-    deleteLast(&List_test); 
+    deletePos(&List_test, 2);
+
+    tail = List_test->link;
+    printf("Length Head: %d\n", List_test->length);
+    printf("Length Tail: %d\n", tail->length);
+
 
     printLinkedList(&List_test);
 
