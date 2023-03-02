@@ -445,7 +445,7 @@ void deleteLast(Header **head) {
     }
 }
 
-// To Do!
+
 void deletePos(Header **head, int position) {
     if (*head == NULL) {
         printf("Empty List - Cannot delete element.\n");
@@ -506,6 +506,18 @@ void deletePos(Header **head, int position) {
 }
 
 
+void deleteAll(Header **head) {
+    if (*head == NULL) {
+        printf("Empty List - Cannot delete element.\n");
+        return;
+    }
+
+    while(*head != NULL) {    
+        deleteFirst(head);
+    }
+}
+
+
 //--------------------------------------------------------------------
 //                              Replacement
 //--------------------------------------------------------------------
@@ -516,10 +528,7 @@ void replaceFirst(Header **head, int data) {
         return;
     } 
 
-    // Base Case -> One Node
-    if ((*head)->chain_node->next == NULL) {
-        printf("ToDo!\n");
-    }
+    
 
 }
 
@@ -540,9 +549,20 @@ void replacePos(Header **head, int data, int position) {
         printf("Position Invalid. Cannot add element to Linked List\n");
         return;
     }
-
-
 }
+
+
+//--------------------------------------------------------------------
+//                            Search and Counting
+//--------------------------------------------------------------------
+
+
+
+
+//--------------------------------------------------------------------
+//                             Copy and Clonning
+//--------------------------------------------------------------------
+
 
 
 
@@ -551,23 +571,11 @@ int main() {
     // Test Stuff
     Header *List_test = NULL;
 
+    addLast(&List_test, 111);
     addLast(&List_test, 123);
-    addLast(&List_test, 666);
-    addLast(&List_test, 6543);
-    addLast(&List_test, 13);
+    addLast(&List_test, 321);
 
-    deletePos(&List_test, 2);
-
-    tail = List_test->link;
-    printf("Length Head: %d\n", List_test->length);
-    printf("Length Tail: %d\n", tail->length);
-
-
-    printLinkedList(&List_test);
-
-
- 
-    
+    printLinkedList(&List_test);  
 
 }
 
